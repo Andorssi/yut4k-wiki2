@@ -1,0 +1,4 @@
+baseURL = 'https://yut4k-wiki.com/'
+languageCode = 'ja'
+title = 'My Hugo Site'
+theme = "PaperMod"
