@@ -1,4 +1,4 @@
-baseURL = 'https://yut4k-wiki.com/'
+baseURL = 'https://wiki.yut4k.com/'
 languageCode = 'ja'
-title = 'My Hugo Site'
-theme = "PaperMod"
+title = '高橋優作の独り言'
+theme = "hugo-book"
