@@ -10,7 +10,7 @@ disableKinds = ['taxonomy', 'taxonomyTerm']
   BookSection = 'docs'
   BookToC = true
   BookSearch = true
-  BookFavicon = "./static/favicon.png"
+  BookFavicon = "favicon.png"
 
 [markup]
 	[markup.goldmark]
