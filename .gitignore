@@ -1,3 +1,47 @@
-public/
-resources/_gen/
+# -----------------------
+# Hugo build outputs
+# ------------------------
+/public/
+/resources/_gen/
+
+# ------------------------
+# Node / tooling (使っていれば)
+# ------------------------
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# ------------------------
+# OS / Editor
+# ------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ------------------------
+# Logs / temp
+# ------------------------
+*.log
+*.tmp
+
+# ------------------------
+# Cloudflare local env
+# ------------------------
+.dev.vars
+
+# ------------------------
+# Optional: cache
+# ------------------------
 .hugo_build.lock
+
+# Hugo modules cache
+.cache/
+
+# Cloudflare local dev
+.wrangler/
+
+# dotenv系
+.env
+.env.*

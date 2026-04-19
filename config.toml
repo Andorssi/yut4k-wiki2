@@ -2,3 +2,17 @@ baseURL = 'https://wiki.yut4k.com/'
 languageCode = 'ja'
 title = '高橋優作の独り言'
 theme = "hugo-book"
+
+disableKinds = ['taxonomy', 'taxonomyTerm']
+
+[params]
+  BookTheme = 'dark'
+  BookSection = 'docs'
+  BookToC = true
+  BookSearch = true
+  BookFavicon = "./static/favicon.png"
+
+[markup]
+	[markup.goldmark]
+		[markup.goldmark.renderer]
+			unsafe = true

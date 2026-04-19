@@ -1,0 +1,173 @@
+/* 全体の読みやすさ */
+.book-article {
+  max-width: 860px;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* 見出しの余白 */
+.book-article h1,
+.book-article h2,
+.book-article h3,
+.book-article h4 {
+  line-height: 1.35;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.book-article h1 {
+  margin-top: 0.5rem;
+  font-size: 2rem;
+}
+
+.book-article h2 {
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* 本文とリスト */
+.book-article p,
+.book-article li {
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.book-article ul,
+.book-article ol {
+  padding-left: 1.5rem;
+}
+
+/* リンク */
+.book-article a {
+  text-underline-offset: 0.15em;
+}
+
+.book-article a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* 画像 */
+.book-article img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.2rem auto;
+  border-radius: 10px;
+}
+
+/* 表 */
+.book-article table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+}
+
+.book-article th,
+.book-article td {
+  padding: 0.65rem 0.9rem;
+  vertical-align: top;
+}
+
+/* コードブロック */
+.book-article pre {
+  border-radius: 10px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.book-article code {
+  font-size: 0.92em;
+}
+
+/* 引用 */
+.book-article blockquote {
+  margin: 1rem 0;
+  padding: 0.2rem 1rem;
+  border-left: 4px solid rgba(120, 180, 255, 0.8);
+}
+
+/* サイドバー */
+.book-menu {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.book-menu nav {
+  font-size: 0.95rem;
+}
+
+.book-menu a {
+  border-radius: 8px;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+/* 現在ページの強調 */
+.book-menu a.active,
+.book-menu .active {
+  font-weight: 600;
+}
+
+/* 左サイドバーの各項目に丸ポチ */
+.book-menu nav ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+
+.book-menu nav li {
+  margin: 0.2rem 0;
+}
+
+.book-menu nav a {
+  display: inline-block;
+  padding: 0.1rem 0;
+}
+
+/* ネストした階層は少しずつ下げる */
+.book-menu nav ul ul {
+  padding-left: 1.2rem;
+}
+
+/* 右側の目次 */
+.book-toc {
+  font-size: 0.9rem;
+}
+
+.book-toc a {
+  line-height: 1.5;
+}
+
+/* スマホ */
+@media (max-width: 768px) {
+  .book-article {
+    font-size: 15px;
+  }
+
+  .book-article h1 {
+    font-size: 1.7rem;
+  }
+
+  .book-article h2 {
+    font-size: 1.35rem;
+  }
+}
+
+.center-fig {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.center-fig img {
+  display: block;
+  max-width: 70%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.center-fig .caption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
