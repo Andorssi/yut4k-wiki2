@@ -5,6 +5,7 @@ weight: 100
 
 # 秘密
 
+## 秘密の部屋へようこそ
 
 ## 外部リンク集
 |Seikei Portal：[https://portal.seikei.ac.jp/campusweb/top.do](https://portal.seikei.ac.jp/campusweb/top.do)|
