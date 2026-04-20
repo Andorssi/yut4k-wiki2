@@ -3,7 +3,7 @@ languageCode = 'ja'
 title = '高橋優作の独り言'
 theme = "hugo-book"
 
-disableKinds = ['taxonomy', 'taxonomyTerm']
+disableKinds = ['taxonomy']
 
 [params]
   BookTheme = 'dark'
@@ -16,3 +16,4 @@ disableKinds = ['taxonomy', 'taxonomyTerm']
 	[markup.goldmark]
 		[markup.goldmark.renderer]
 			unsafe = true
+

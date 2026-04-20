@@ -171,3 +171,25 @@
   font-size: 0.9rem;
   opacity: 0.8;
 }
+
+/* 左上タイトル */
+.book-brand {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 25px;
+  color: #4CAF50; /* 緑 */
+  font-weight: bold;
+}
+
+/* ホバー時 */
+.book-brand:hover {
+  color: #81C784;
+}
+
+.info-table {
+	width: 65%
+	height: auto
+}
+
+.info-image img {
+ 	width: 35%;
+}

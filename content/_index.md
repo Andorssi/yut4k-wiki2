@@ -3,7 +3,8 @@ title: "FrontPage"
 type: "docs"
 ---
 
-# フロントページです．ゆっくりしていってください．
+# 高橋優作の独り言
+フロントページです．ゆっくりしていってください．
 
 <div class="center-fig">
     <img src="/figure/8787.jpeg" alt="沖縄学会の時に見つけたハイビスカス">

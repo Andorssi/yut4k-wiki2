@@ -1,5 +1,6 @@
 ---
 title: "このWikiについて"
+Bookhidden: true
 ---
 
 # このWikiについて
