@@ -1,0 +1,11 @@
+{{ $result := transform.HighlightCodeBlock . }}
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-block-lang">{{ .Type }}</span>
+    <button class="copy-code-button" type="button">コピー</button>
+  </div>
+  <div class="code-block-body">
+    {{ $result.Wrapped }}
+  </div>
+</div>
