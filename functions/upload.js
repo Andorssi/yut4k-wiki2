@@ -6,7 +6,7 @@ export async function onRequestPost(context) {
   // パスワード確認
   const password = formData.get("password");
 
-  if (password !== env.PASSWORD) {
+  if (password !== env.UPLOAD_PW) {
     return new Response("ファイルを置くにはパスワードが必要です", {
       status: 401,
     });

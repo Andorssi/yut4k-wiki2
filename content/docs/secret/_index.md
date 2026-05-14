@@ -23,7 +23,10 @@ weight: 100
 
 
 ## 一時ファイル置き場
-<form action="/upload" method="POST" enctype="multipart/form-data">
+ファイルアップロードにはパスワードが必要です． <br>
+ファイルのアップロードは20MB以内です． <br>
+
+<form id="upload-form">
   <p>
     <label>パスワード</label><br>
     <input type="password" name="password" required>
@@ -38,6 +41,40 @@ weight: 100
     <button type="submit">Upload</button>
   </p>
 </form>
+
+<p id="upload-message"></p>
+
+<script>
+document.getElementById("upload-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const message = document.getElementById("upload-message");
+  const formData = new FormData(form);
+
+  message.textContent = "アップロード中...";
+
+  try {
+    const response = await fetch("/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      message.textContent = "アップロード完了しました．";
+      alert("アップロード完了しました．");
+      form.reset();
+    } else {
+      const text = await response.text();
+      message.textContent = "アップロード失敗: " + text;
+      alert("アップロード失敗: " + text);
+    }
+  } catch (error) {
+    message.textContent = "通信エラーが発生しました．";
+    alert("通信エラーが発生しました．");
+  }
+});
+</script>
 
 ## その他
 一応，このページはユーザ名とパスワードを求めるようにしている．動的サイトではないので，SQLインジェクションやXSSの類の脅威の心配はしていないが，脆弱性があれば対策する予定．まあ，個人情報とかクレカ情報とかを扱うわけではないのでクラックされても何ら問題ない．
