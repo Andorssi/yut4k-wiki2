@@ -6,8 +6,8 @@ export async function onRequestPost(context) {
       return new Response("R2 binding BUCKET is not set", { status: 500 });
     }
 
-    if (!env.UPLOAD_PASSWORD) {
-      return new Response("UPLOAD_PASSWORD is not set", { status: 500 });
+    if (!env.UPLOAD_PW) {
+      return new Response("UPLOAD_PW is not set", { status: 500 });
     }
 
     const formData = await request.formData();
@@ -23,24 +23,8 @@ export async function onRequestPost(context) {
     }
 
     const MAX_SIZE = 20 * 1024 * 1024; // 20MB
-
     if (file.size > MAX_SIZE) {
       return new Response("File too large", { status: 413 });
-    }
-
-    const allowedTypes = [
-      "image/png",
-      "image/jpeg",
-      "application/pdf",
-      "text/plain",
-      "application/zip",
-      "application/x-zip-compressed",
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-      return new Response("Invalid file type: " + file.type, {
-        status: 400,
-      });
     }
 
     const originalName = file.name.replace(/[^\w.\-ぁ-んァ-ヶ一-龠]/g, "_");
@@ -62,9 +46,8 @@ export async function onRequestPost(context) {
       url: `/download/${key}`,
     });
   } catch (error) {
-    return new Response(
-      "Upload function error: " + error.message,
-      { status: 500 }
-    );
+    return new Response("Upload function error: " + error.message, {
+      status: 500,
+    });
   }
 }
