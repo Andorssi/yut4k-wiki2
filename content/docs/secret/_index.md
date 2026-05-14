@@ -23,7 +23,28 @@ weight: 100
 
 
 ## 一時ファイル置き場
+<form
+  action="/upload"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    required
+  >
 
+  <input
+    type="file"
+    name="file"
+    required
+  >
+
+  <button type="submit">
+    Upload
+  </button>
+</form>
 
 ## その他
 一応，このページはユーザ名とパスワードを求めるようにしている．動的サイトではないので，SQLインジェクションやXSSの類の脅威の心配はしていないが，脆弱性があれば対策する予定．まあ，個人情報とかクレカ情報とかを扱うわけではないのでクラックされても何ら問題ない．
