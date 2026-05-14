@@ -13,7 +13,7 @@ export async function onRequestPost(context) {
     const formData = await request.formData();
 
     const password = formData.get("password");
-    if (password !== env.UPLOAD_PASSWORD) {
+    if (password !== env.UPLOAD_PW) {
       return new Response("Unauthorized", { status: 401 });
     }
 
