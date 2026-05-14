@@ -44,9 +44,7 @@ weight: 100
 
 <p id="upload-message"></p>
 
-<hr>
-
-<h2>アップロード済みファイル</h2>
+### アップロード済みファイル
 
 <button id="reload-files">一覧を更新</button>
 

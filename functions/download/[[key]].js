@@ -1,37 +1,50 @@
 export async function onRequestPost(context) {
-  const { request, env, params } = context;
+  try {
+    const { request, env, params } = context;
 
-  const formData = await request.formData();
+    const formData = await request.formData();
 
-  const password = formData.get("password");
-  if (password !== env.UPLOAD_PW) {
-    return new Response("Unauthorized", { status: 401 });
+    const password = formData.get("password");
+
+    if (password !== env.UPLOAD_PW) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    // ここ重要
+    const key = Array.isArray(params.key)
+      ? params.key.join("/")
+      : params.key;
+
+    console.log("DOWNLOAD KEY =", key);
+
+    const object = await env.BUCKET.get(key);
+
+    if (!object) {
+      return new Response(
+        "File not found: " + key,
+        { status: 404 }
+      );
+    }
+
+    const headers = new Headers();
+
+    object.writeHttpMetadata(headers);
+
+    headers.set(
+      "Content-Disposition",
+      `attachment; filename="${key.split("/").pop()}"`
+    );
+
+    return new Response(object.body, {
+      headers,
+    });
+
+  } catch (error) {
+    return new Response(
+      "Download error: " + error.message,
+      { status: 500 }
+    );
   }
-
-  const key = params.key.join("/");
-
-  if (!key.startsWith("uploads/")) {
-    return new Response("Invalid key", { status: 400 });
-  }
-
-  const object = await env.BUCKET.get(key);
-
-  if (!object) {
-    return new Response("File not found", { status: 404 });
-  }
-
-  const headers = new Headers();
-  object.writeHttpMetadata(headers);
-
-  const filename =
-    object.customMetadata?.originalName ||
-    key.split("/").pop();
-
-  headers.set("etag", object.httpEtag);
-  headers.set(
-    "Content-Disposition",
-    `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`
-  );
-
-  return new Response(object.body, { headers });
 }
