@@ -2,14 +2,6 @@ export async function onRequestPost(context) {
   try {
     const { request, env } = context;
 
-    if (!env.BUCKET) {
-      return new Response("R2 binding BUCKET is not set", { status: 500 });
-    }
-
-    if (!env.UPLOAD_PW) {
-      return new Response("UPLOAD_PW is not set", { status: 500 });
-    }
-
     const formData = await request.formData();
 
     const password = formData.get("password");
@@ -22,13 +14,17 @@ export async function onRequestPost(context) {
       return new Response("No file", { status: 400 });
     }
 
-    const MAX_SIZE = 20 * 1024 * 1024; // 20MB
+    const MAX_SIZE = 20 * 1024 * 1024;
     if (file.size > MAX_SIZE) {
       return new Response("File too large", { status: 413 });
     }
 
-    const originalName = file.name.replace(/[^\w.\-ぁ-んァ-ヶ一-龠]/g, "_");
-    const key = `uploads/${crypto.randomUUID()}-${originalName}`;
+    const originalName = file.name;
+    const ext = originalName.includes(".")
+      ? originalName.split(".").pop()
+      : "bin";
+
+    const key = `uploads/${crypto.randomUUID()}.${ext}`;
 
     await env.BUCKET.put(key, file.stream(), {
       httpMetadata: {

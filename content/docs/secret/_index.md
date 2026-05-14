@@ -141,7 +141,7 @@ async function downloadFile(key, name) {
   formData.append("password", passwordInput.value);
 
   try {
-    const response = await fetch("/download/" + key, {
+    const response = await fetch("/download/" + encodeURI(key), {
       method: "POST",
       body: formData,
     });
