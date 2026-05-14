@@ -13,7 +13,7 @@ export async function onRequestPost(context) {
     return new Response("No file", { status: 400 });
   }
 
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_SIZE = 20 * 1024 * 1024; // 20MB
   if (file.size > MAX_SIZE) {
     return new Response("File too large", { status: 413 });
   }
