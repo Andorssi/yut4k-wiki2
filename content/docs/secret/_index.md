@@ -23,13 +23,14 @@ weight: 100
 
 
 ## 一時ファイル置き場
+## 一時ファイル置き場
 ファイルアップロードにはパスワードが必要です． <br>
 ファイルのアップロードは20MB以内です． <br>
 
 <form id="upload-form">
   <p>
     <label>パスワード</label><br>
-    <input type="password" name="password" required>
+    <input type="password" name="password" id="password" required>
   </p>
 
   <p>
@@ -44,15 +45,26 @@ weight: 100
 
 <p id="upload-message"></p>
 
+<hr>
+
+<h2>アップロード済みファイル</h2>
+
+<button id="reload-files">一覧を更新</button>
+
+<ul id="file-list"></ul>
+
 <script>
-document.getElementById("upload-form").addEventListener("submit", async function (e) {
+const passwordInput = document.getElementById("password");
+const uploadForm = document.getElementById("upload-form");
+const uploadMessage = document.getElementById("upload-message");
+const fileList = document.getElementById("file-list");
+
+uploadForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const form = e.target;
-  const message = document.getElementById("upload-message");
-  const formData = new FormData(form);
+  const formData = new FormData(uploadForm);
 
-  message.textContent = "アップロード中...";
+  uploadMessage.textContent = "アップロード中...";
 
   try {
     const response = await fetch("/upload", {
@@ -60,20 +72,108 @@ document.getElementById("upload-form").addEventListener("submit", async function
       body: formData,
     });
 
-    if (response.ok) {
-      message.textContent = "アップロード完了しました．";
-      alert("アップロード完了しました．");
-      form.reset();
-    } else {
+    if (!response.ok) {
       const text = await response.text();
-      message.textContent = "アップロード失敗: " + text;
+      uploadMessage.textContent = "アップロード失敗: " + text;
       alert("アップロード失敗: " + text);
+      return;
     }
+
+    uploadMessage.textContent = "アップロード完了しました．";
+    alert("アップロード完了しました．");
+
+    uploadForm.reset();
+    fileList.innerHTML = "";
   } catch (error) {
-    message.textContent = "通信エラーが発生しました．";
+    uploadMessage.textContent = "通信エラーが発生しました．";
     alert("通信エラーが発生しました．");
   }
 });
+
+async function loadFiles() {
+  fileList.innerHTML = "<li>読み込み中...</li>";
+
+  const formData = new FormData();
+  formData.append("password", passwordInput.value);
+
+  try {
+    const response = await fetch("/list-files", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      fileList.innerHTML = "<li>一覧取得失敗: " + text + "</li>";
+      return;
+    }
+
+    const files = await response.json();
+
+    if (files.length === 0) {
+      fileList.innerHTML = "<li>ファイルはありません．</li>";
+      return;
+    }
+
+    fileList.innerHTML = "";
+
+    for (const file of files) {
+      const li = document.createElement("li");
+
+      const span = document.createElement("span");
+      span.textContent =
+        file.name + " (" + Math.round(file.size / 1024) + " KB) ";
+
+      const button = document.createElement("button");
+      button.textContent = "ダウンロード";
+      button.addEventListener("click", function () {
+        downloadFile(file.key, file.name);
+      });
+
+      li.appendChild(span);
+      li.appendChild(button);
+      fileList.appendChild(li);
+    }
+  } catch (error) {
+    fileList.innerHTML = "<li>通信エラーが発生しました．</li>";
+  }
+}
+
+async function downloadFile(key, name) {
+  const formData = new FormData();
+  formData.append("password", passwordInput.value);
+
+  try {
+    const response = await fetch("/download/" + key, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      alert("ダウンロード失敗: " + text);
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    alert("通信エラーが発生しました．");
+  }
+}
+
+document
+  .getElementById("reload-files")
+  .addEventListener("click", loadFiles);
 </script>
 
 ## その他

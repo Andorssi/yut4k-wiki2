@@ -3,59 +3,45 @@ export async function onRequestPost(context) {
 
   const formData = await request.formData();
 
-  // パスワード確認
   const password = formData.get("password");
-
-  if (password !== env.UPLOAD_PW) {
-    return new Response("ファイルを置くにはパスワードが必要です", {
-      status: 401,
-    });
+  if (password !== env.UPLOAD_PASSWORD) {
+    return new Response("Unauthorized", { status: 401 });
   }
 
   const file = formData.get("file");
-
   if (!file || typeof file === "string") {
-    return new Response("No file", {
-      status: 400,
-    });
+    return new Response("No file", { status: 400 });
   }
 
-  // 最大サイズ制限（10MB）
-  const MAX_SIZE = 20 * 1024 * 1024;
-
+  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
   if (file.size > MAX_SIZE) {
-    return new Response("ファイルサイズは20MBまでです", {
-      status: 413,
-    });
+    return new Response("File too large", { status: 413 });
   }
 
-  // 拡張子制限
-  //const allowed = [
-  //  "image/png",
-  //  "image/jpeg",
-  //  "application/pdf",
-  //];
+  if (!allowedTypes.includes(file.type)) {
+    return new Response("Invalid file type", { status: 400 });
+  }
 
-  //if (!allowed.includes(file.type)) {
-  //  return new Response("Invalid file type", {
-  //    status: 400,
-  //  });
-  //}
+  const originalName = file.name.replace(/[^\w.\-ぁ-んァ-ヶ一-龠]/g, "_");
+  const ext = originalName.includes(".")
+    ? originalName.split(".").pop()
+    : "bin";
 
-  // 保存名
-  const key =
-    `uploads/${Date.now()}-${file.name}`;
+  const key = `uploads/${crypto.randomUUID()}-${originalName}`;
 
-  // R2へ保存
-  await env.BUCKET.put(
+  await env.BUCKET.put(key, file.stream(), {
+    httpMetadata: {
+      contentType: file.type || "application/octet-stream",
+    },
+    customMetadata: {
+      originalName,
+    },
+  });
+
+  return Response.json({
+    ok: true,
+    name: originalName,
     key,
-    file.stream(),
-    {
-      httpMetadata: {
-        contentType: file.type,
-      },
-    }
-  );
-
-  return new Response("Upload OK");
+    url: `/download/${key}`,
+  });
 }
