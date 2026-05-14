@@ -23,27 +23,20 @@ weight: 100
 
 
 ## 一時ファイル置き場
-<form
-  action="/upload"
-  method="POST"
-  enctype="multipart/form-data"
->
-  <input
-    type="password"
-    name="password"
-    placeholder="Password"
-    required
-  >
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <p>
+    <label>パスワード</label><br>
+    <input type="password" name="password" required>
+  </p>
 
-  <input
-    type="file"
-    name="file"
-    required
-  >
+  <p>
+    <label>ファイル</label><br>
+    <input type="file" name="file" required>
+  </p>
 
-  <button type="submit">
-    Upload
-  </button>
+  <p>
+    <button type="submit">Upload</button>
+  </p>
 </form>
 
 ## その他
