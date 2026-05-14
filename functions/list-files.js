@@ -13,18 +13,22 @@ export async function onRequestPost(context) {
       prefix: "uploads/",
     });
 
-    const files = listed.objects.map((object) => {
-      const originalName =
-        object.customMetadata?.originalName ||
-        object.key.split("/").pop();
+    const files = await Promise.all(
+      listed.objects.map(async (object) => {
+        const head = await env.BUCKET.head(object.key);
 
-      return {
-        key: object.key,
-        name: originalName,
-        size: object.size,
-        uploaded: object.uploaded,
-      };
-    });
+        const originalName =
+          head?.customMetadata?.originalName ||
+          object.key.split("/").pop();
+
+        return {
+          key: object.key,
+          name: originalName,
+          size: object.size,
+          uploaded: object.uploaded,
+        };
+      })
+    );
 
     return Response.json(files);
   } catch (error) {
