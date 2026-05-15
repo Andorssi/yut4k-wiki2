@@ -26,25 +26,11 @@ weight: 100
 ファイルアップロードにはパスワードが必要です． <br>
 ファイルのアップロードは20MB以内です． <br>
 
-<form id="upload-form">
-  <p>
-    <label>パスワード</label><br>
-    <input type="password" name="password" id="password" required>
-  </p>
-
-  <p>
-    <label>ファイル</label><br>
-    <input type="file" name="file" required>
-  </p>
-
-  <p>
-    <button type="submit">Upload</button>
-  </p>
-</form>
-
 <p id="upload-message"></p>
 
-### アップロード済みファイル
+<hr>
+
+<h2>アップロード済みファイル</h2>
 
 <button id="reload-files">一覧を更新</button>
 
@@ -58,16 +44,14 @@ weight: 100
       <th>削除</th>
     </tr>
   </thead>
-
-  <tbody id="file-table-body">
-  </tbody>
+  <tbody id="file-table-body"></tbody>
 </table>
 
 <script>
 const passwordInput = document.getElementById("password");
 const uploadForm = document.getElementById("upload-form");
 const uploadMessage = document.getElementById("upload-message");
-const fileList = document.getElementById("file-list");
+const fileTableBody = document.getElementById("file-table-body");
 
 uploadForm.addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -92,16 +76,20 @@ uploadForm.addEventListener("submit", async function (e) {
     uploadMessage.textContent = "アップロード完了しました．";
     alert("アップロード完了しました．");
 
-    uploadForm.reset();
-    fileList.innerHTML = "";
+    // パスワードは消さず，ファイル選択だけ消す
+    uploadForm.querySelector('input[type="file"]').value = "";
+
+    await loadFiles();
+
   } catch (error) {
-    uploadMessage.textContent = "通信エラーが発生しました．";
-    alert("通信エラーが発生しました．");
+    uploadMessage.textContent = "通信エラーが発生しました: " + error.message;
+    alert("通信エラーが発生しました: " + error.message);
   }
 });
 
 async function loadFiles() {
-  fileList.innerHTML = "<li>読み込み中...</li>";
+  fileTableBody.innerHTML =
+    '<tr><td colspan="5">読み込み中...</td></tr>';
 
   const formData = new FormData();
   formData.append("password", passwordInput.value);
@@ -114,38 +102,61 @@ async function loadFiles() {
 
     if (!response.ok) {
       const text = await response.text();
-      fileList.innerHTML = "<li>一覧取得失敗: " + text + "</li>";
+      fileTableBody.innerHTML =
+        '<tr><td colspan="5">一覧取得失敗: ' + text + '</td></tr>';
       return;
     }
 
     const files = await response.json();
 
     if (files.length === 0) {
-      fileList.innerHTML = "<li>ファイルはありません．</li>";
+      fileTableBody.innerHTML =
+        '<tr><td colspan="5">ファイルはありません．</td></tr>';
       return;
     }
 
-    fileList.innerHTML = "";
+    fileTableBody.innerHTML = "";
 
     for (const file of files) {
-      const li = document.createElement("li");
+      const tr = document.createElement("tr");
 
-      const span = document.createElement("span");
-      span.textContent =
-        file.name + " (" + Math.round(file.size / 1024) + " KB) ";
+      const tdName = document.createElement("td");
+      tdName.textContent = file.name;
 
-      const button = document.createElement("button");
-      button.textContent = "ダウンロード";
-      button.addEventListener("click", function () {
+      const tdSize = document.createElement("td");
+      tdSize.textContent = Math.round(file.size / 1024) + " KB";
+
+      const tdDate = document.createElement("td");
+      tdDate.textContent = new Date(file.uploaded).toLocaleString("ja-JP");
+
+      const tdDownload = document.createElement("td");
+      const downloadButton = document.createElement("button");
+      downloadButton.textContent = "ダウンロード";
+      downloadButton.addEventListener("click", function () {
         downloadFile(file.key, file.name);
       });
+      tdDownload.appendChild(downloadButton);
 
-      li.appendChild(span);
-      li.appendChild(button);
-      fileList.appendChild(li);
+      const tdDelete = document.createElement("td");
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "削除";
+      deleteButton.addEventListener("click", function () {
+        deleteFile(file.key);
+      });
+      tdDelete.appendChild(deleteButton);
+
+      tr.appendChild(tdName);
+      tr.appendChild(tdSize);
+      tr.appendChild(tdDate);
+      tr.appendChild(tdDownload);
+      tr.appendChild(tdDelete);
+
+      fileTableBody.appendChild(tr);
     }
+
   } catch (error) {
-    fileList.innerHTML = "<li>通信エラーが発生しました．</li>";
+    fileTableBody.innerHTML =
+      '<tr><td colspan="5">通信エラー: ' + error.message + '</td></tr>';
   }
 }
 
@@ -153,32 +164,51 @@ async function downloadFile(key, name) {
   const formData = new FormData();
   formData.append("password", passwordInput.value);
 
-  try {
-    const response = await fetch("/download/" + encodeURI(key), {
-      method: "POST",
-      body: formData,
-    });
+  const response = await fetch("/download/" + encodeURI(key), {
+    method: "POST",
+    body: formData,
+  });
 
-    if (!response.ok) {
-      const text = await response.text();
-      alert("ダウンロード失敗: " + text);
-      return;
-    }
-
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    alert("通信エラーが発生しました．");
+  if (!response.ok) {
+    const text = await response.text();
+    alert("ダウンロード失敗: " + text);
+    return;
   }
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+async function deleteFile(key) {
+  if (!confirm("削除しますか？")) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("password", passwordInput.value);
+
+  const response = await fetch("/delete-file/" + encodeURI(key), {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    alert("削除失敗: " + text);
+    return;
+  }
+
+  alert("削除しました．");
+  await loadFiles();
 }
 
 document
