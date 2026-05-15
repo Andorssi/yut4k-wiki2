@@ -26,6 +26,22 @@ weight: 100
 ファイルアップロードにはパスワードが必要です． <br>
 ファイルのアップロードは20MB以内です． <br>
 
+<form id="upload-form">
+  <p>
+    <label>パスワード</label><br>
+    <input type="password" name="password" id="password" required>
+  </p>
+
+  <p>
+    <label>ファイル</label><br>
+    <input type="file" name="file" required>
+  </p>
+
+  <p>
+    <button type="submit">Upload</button>
+  </p>
+</form>
+
 <p id="upload-message"></p>
 
 <hr>
