@@ -48,7 +48,20 @@ weight: 100
 
 <button id="reload-files">一覧を更新</button>
 
-<ul id="file-list"></ul>
+<table id="file-table" border="1">
+  <thead>
+    <tr>
+      <th>ファイル名</th>
+      <th>サイズ</th>
+      <th>アップロード日時</th>
+      <th>ダウンロード</th>
+      <th>削除</th>
+    </tr>
+  </thead>
+
+  <tbody id="file-table-body">
+  </tbody>
+</table>
 
 <script>
 const passwordInput = document.getElementById("password");

@@ -16,7 +16,9 @@ export async function onRequestPost(context) {
     const object = await env.BUCKET.get(key);
 
     if (!object) {
-      return new Response("File not found: " + key, { status: 404 });
+      return new Response("File not found: " + key, {
+        status: 404,
+      });
     }
 
     const filename =
@@ -26,12 +28,15 @@ export async function onRequestPost(context) {
     const headers = new Headers();
     object.writeHttpMetadata(headers);
 
+    headers.set("etag", object.httpEtag);
     headers.set(
       "Content-Disposition",
       `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`
     );
 
-    return new Response(object.body, { headers });
+    return new Response(object.body, {
+      headers,
+    });
   } catch (error) {
     return new Response("Download error: " + error.message, {
       status: 500,

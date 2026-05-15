@@ -14,7 +14,7 @@ export async function onRequestPost(context) {
       return new Response("No file", { status: 400 });
     }
 
-    const MAX_SIZE = 20 * 1024 * 1024;
+    const MAX_SIZE = 20 * 1024 * 1024; // 20MB
     if (file.size > MAX_SIZE) {
       return new Response("File too large", { status: 413 });
     }
@@ -39,7 +39,6 @@ export async function onRequestPost(context) {
       ok: true,
       name: originalName,
       key,
-      url: `/download/${key}`,
     });
   } catch (error) {
     return new Response("Upload function error: " + error.message, {

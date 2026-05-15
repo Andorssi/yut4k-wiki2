@@ -30,6 +30,10 @@ export async function onRequestPost(context) {
       })
     );
 
+    files.sort((a, b) => {
+      return new Date(b.uploaded) - new Date(a.uploaded);
+    });
+
     return Response.json(files);
   } catch (error) {
     return new Response("List files error: " + error.message, {
