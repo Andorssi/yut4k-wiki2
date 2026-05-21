@@ -28,7 +28,7 @@ export async function onRequestPost(context) {
       .filter(Boolean)
       .map((line) => JSON.parse(line))
       .reverse()
-      .slice(0, 100);
+      // .slice(0, 100);
 
     return Response.json({
       total: text.trim() ? text.trim().split("\n").length : 0,

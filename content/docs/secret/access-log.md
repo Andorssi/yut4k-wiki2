@@ -7,7 +7,7 @@ bookHidden: true
 
 [秘密に戻る](/docs/secret/)
 
-## パスワード
+## さらなる秘密を知るためのパスワード
 
 <p>
   <label>入力せよ</label><br>
