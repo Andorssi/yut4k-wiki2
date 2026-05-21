@@ -24,3 +24,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("/log-access", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      path: location.pathname,
+      title: document.title,
+      action: "view",
+    }),
+  }).catch(function () {
+    // ログ記録失敗時もページ表示には影響させない
+  });
+});
+</script>
