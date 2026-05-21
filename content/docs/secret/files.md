@@ -5,7 +5,7 @@ bookHidden: true
 
 # ファイル置き場
 
-[秘密に戻る](./_index/)
+[秘密に戻る](/docs/secret/_index/)
 
 ## さらなる秘密を知るためのパスワード
 <form id="upload-form">
