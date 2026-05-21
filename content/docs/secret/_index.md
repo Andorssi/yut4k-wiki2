@@ -230,7 +230,121 @@ async function deleteFile(key) {
 document
   .getElementById("reload-files")
   .addEventListener("click", loadFiles);
+
+
+async function recordAccess(action) {
+  await fetch("/log-access", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      path: location.pathname,
+      title: document.title,
+      action,
+    }),
+  });
+}
+
+// アクセスログ系
+async function loadAccessLogs() {
+  const logBody = document.getElementById("access-log-body");
+  const count = document.getElementById("access-count");
+
+  logBody.innerHTML =
+    '<tr><td colspan="6">読み込み中...</td></tr>';
+
+  const formData = new FormData();
+  formData.append("password", passwordInput.value);
+
+  const response = await fetch("/list-access-logs", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    logBody.innerHTML =
+      '<tr><td colspan="6">ログ取得失敗: ' + text + '</td></tr>';
+    return;
+  }
+
+  const result = await response.json();
+
+  count.textContent =
+    "総アクセスログ数: " + result.total;
+
+  if (result.logs.length === 0) {
+    logBody.innerHTML =
+      '<tr><td colspan="6">ログはありません．</td></tr>';
+    return;
+  }
+
+  logBody.innerHTML = "";
+
+  for (const log of result.logs) {
+    const tr = document.createElement("tr");
+
+    const tdTime = document.createElement("td");
+    tdTime.textContent =
+      new Date(log.time).toLocaleString("ja-JP");
+
+    const tdPath = document.createElement("td");
+    tdPath.textContent = log.path;
+
+    const tdAction = document.createElement("td");
+    tdAction.textContent = log.action;
+
+    const tdIp = document.createElement("td");
+    tdIp.textContent = log.ip;
+
+    const tdCountry = document.createElement("td");
+    tdCountry.textContent = log.country;
+
+    const tdUa = document.createElement("td");
+    tdUa.textContent = log.userAgent;
+
+    tr.appendChild(tdTime);
+    tr.appendChild(tdPath);
+    tr.appendChild(tdAction);
+    tr.appendChild(tdIp);
+    tr.appendChild(tdCountry);
+    tr.appendChild(tdUa);
+
+    logBody.appendChild(tr);
+  }
+}
+
+document
+  .getElementById("reload-logs")
+  .addEventListener("click", loadAccessLogs);
+
+recordAccess("view");
+
 </script>
+
+<hr>
+
+## アクセスログ
+
+<button id="reload-logs">ログを更新</button>
+
+<p id="access-count"></p>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th>ページ</th>
+      <th>操作</th>
+      <th>IP</th>
+      <th>国</th>
+      <th>端末</th>
+    </tr>
+  </thead>
+  <tbody id="access-log-body"></tbody>
+</table>
+
 
 ## その他
 一応，このページはユーザ名とパスワードを求めるようにしている．動的サイトではないので，SQLインジェクションやXSSの類の脅威の心配はしていないが，脆弱性があれば対策する予定．まあ，個人情報とかクレカ情報とかを扱うわけではないのでクラックされても何ら問題ない．<br>
