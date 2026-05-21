@@ -63,6 +63,29 @@ weight: 100
   <tbody id="file-table-body"></tbody>
 </table>
 
+<hr>
+
+## アクセスログ
+
+<button id="reload-logs">ログを更新</button>
+
+<p id="access-count"></p>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th>ページ</th>
+      <th>操作</th>
+      <th>IP</th>
+      <th>国</th>
+      <th>端末</th>
+    </tr>
+  </thead>
+  <tbody id="access-log-body"></tbody>
+</table>
+
+
 <script>
 const passwordInput = document.getElementById("password");
 const uploadForm = document.getElementById("upload-form");
@@ -323,27 +346,7 @@ recordAccess("view");
 
 </script>
 
-<hr>
 
-## アクセスログ
-
-<button id="reload-logs">ログを更新</button>
-
-<p id="access-count"></p>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>日時</th>
-      <th>ページ</th>
-      <th>操作</th>
-      <th>IP</th>
-      <th>国</th>
-      <th>端末</th>
-    </tr>
-  </thead>
-  <tbody id="access-log-body"></tbody>
-</table>
 
 
 ## その他
