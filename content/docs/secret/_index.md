@@ -324,15 +324,15 @@ async function loadAccessLogs() {
     const tdCountry = document.createElement("td");
     tdCountry.textContent = log.country;
 
-    const tdUa = document.createElement("td");
-    tdUa.textContent = log.userAgent;
+    //const tdUa = document.createElement("td");
+    //tdUa.textContent = log.userAgent;
 
     tr.appendChild(tdTime);
     tr.appendChild(tdPath);
     tr.appendChild(tdAction);
     tr.appendChild(tdIp);
     tr.appendChild(tdCountry);
-    tr.appendChild(tdUa);
+    //tr.appendChild(tdUa);
 
     logBody.appendChild(tr);
   }

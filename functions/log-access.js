@@ -5,15 +5,17 @@ export async function onRequestPost(context) {
     const body = await request.json().catch(() => ({}));
 
     const ip =
-      request.headers.get("CF-Connecting-IP") || "unknown";
+        request.headers.get("CF-Pseudo-IPv4") ||
+        request.headers.get("CF-Connecting-IP") ||
+        "unknown";
 
     const country =
       request.cf?.country ||
       request.headers.get("CF-IPCountry") ||
       "unknown";
 
-    const userAgent =
-      request.headers.get("User-Agent") || "unknown";
+    //const userAgent =
+    //  request.headers.get("User-Agent") || "unknown";
 
     const log = {
       time: new Date().toISOString(),
@@ -22,7 +24,7 @@ export async function onRequestPost(context) {
       action: body.action || "view",
       ip,
       country,
-      userAgent,
+      //userAgent,
     };
 
     const key = "logs/access-log.jsonl";
