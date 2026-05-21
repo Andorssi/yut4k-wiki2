@@ -5,6 +5,8 @@ bookHidden: true
 
 # ファイル置き場
 
+[秘密に戻る](./_index/)
+
 ## さらなる秘密を知るためのパスワード
 <form id="upload-form">
   <p>
