@@ -22,15 +22,16 @@ weight: 100
 
 
 
-## 一時ファイル置き場
-ファイルアップロードにはパスワードが必要です． <br>
-ファイルのアップロードは20MB以内です． <br>
 
 <form id="upload-form">
   <p>
-    <label>パスワード</label><br>
+    <label>さらなる秘密パスワード</label><br>
     <input type="password" name="password" id="password" required>
   </p>
+
+## 一時ファイル置き場
+ファイルアップロードにはパスワードが必要です． <br>
+ファイルのアップロードは20MB以内です． <br>
 
   <p>
     <label>ファイル</label><br>
@@ -79,7 +80,7 @@ weight: 100
       <th>操作</th>
       <th>IP</th>
       <th>国</th>
-      <th>端末</th>
+      <!--<th>端末</th>-->
     </tr>
   </thead>
   <tbody id="access-log-body"></tbody>
