@@ -1,0 +1,97 @@
+/* PC幅だけ自作メニューボタンを有効化 */
+@media screen and (min-width: 56rem) {
+  #menu-toggle {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 9999;
+
+    padding: 0.5rem 1rem;
+    background: #222;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+
+  .book-menu {
+    transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+
+    transform: translateX(0);
+
+    opacity: 1;
+
+    will-change: transform;
+  }
+
+  /* メニュー非表示 */
+  body.menu-hidden .book-menu {
+    transform: translateX(-100%);
+
+    opacity: 0;
+
+    pointer-events: none;
+  }
+
+  body.menu-hidden .book-page {
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
+
+  body.menu-hidden .book-page article {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  body.menu-hidden .book-page .book-post {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  body.menu-hidden main {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  body.menu-hidden .container {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .book-page {
+  transition:
+    margin-left 0.25s ease,
+    width 0.25s ease,
+    max-width 0.25s ease,
+    padding 0.25s ease;
+  }
+}
+
+@media screen and (min-width: 56rem) {
+  .book-menu {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+    max-height: 100vh;
+
+    overflow-y: auto;
+    align-self: flex-start;
+  }
+
+  .book-menu nav {
+    min-height: 100vh;
+  }
+}

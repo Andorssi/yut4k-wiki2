@@ -1,0 +1,26 @@
+<script src="/js/code-copy.js"></script>
+
+<button id="menu-toggle">
+  ≡ 非表示
+</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const button = document.getElementById("menu-toggle");
+  const menu = document.querySelector(".book-menu");
+
+  if (!button || !menu) {
+    return;
+  }
+
+  button.addEventListener("click", function () {
+    document.body.classList.toggle("menu-hidden");
+
+    const hidden = document.body.classList.contains("menu-hidden");
+
+    button.textContent = hidden
+      ? "≡ 表示"
+      : "≡ 非表示";
+  });
+});
+</script>
