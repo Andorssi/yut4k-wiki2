@@ -83,4 +83,5 @@ async function loadMessages() {
 }
 
 loadMessages();
+
 </script>
