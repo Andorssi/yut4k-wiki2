@@ -84,7 +84,7 @@ const messageList =
   document.getElementById("message-list");
 
 const reloadMessagesButton =
-  document.getElementById("reload-messages");
+  document.getElementById("reload-message");
 
 async function loadMessagesForAdmin() {
   if (!messageList) {
@@ -95,7 +95,7 @@ async function loadMessagesForAdmin() {
   messageList.textContent = "読み込み中...";
 
   try {
-    const response = await fetch("/list-messages");
+    const response = await fetch("/list-message");
 
     if (!response.ok) {
       const text = await response.text();
