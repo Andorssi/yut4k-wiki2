@@ -36,185 +36,369 @@ bookHidden: true
 <div id="message-list"></div>
 
 <script>
-const passwordInput = document.getElementById("password");
-const messageInput = document.getElementById("message");
-const imageInput = document.getElementById("image");
-const postButton = document.getElementById("post-button");
-const postResult = document.getElementById("post-result");
-const charCount = document.getElementById("char-count");
+document.addEventListener("DOMContentLoaded", function () {
 
-messageInput.addEventListener("input", function () {
-  charCount.textContent = messageInput.value.length + " / 280";
-});
+  // 要素取得
+  const passwordInput = document.getElementById("password");
+  const messageInput = document.getElementById("message");
+  const imageInput = document.getElementById("image");
+  const postButton = document.getElementById("post-button");
+  const postResult = document.getElementById("post-result");
+  const charCount = document.getElementById("char-count");
+  const messageList = document.getElementById("message-list");
+  const reloadMessagesButton = document.getElementById("reload-messages");
 
-postButton.addEventListener("click", async function () {
-  const formData = new FormData();
-
-  formData.append("password", passwordInput.value);
-  formData.append("text", messageInput.value);
-
-  if (imageInput.files.length > 0) {
-    formData.append("image", imageInput.files[0]);
-  }
-
-  postResult.textContent = "投稿中...";
-
-  const response = await fetch("/post-message", {
-    method: "POST",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    postResult.textContent = "投稿失敗: " + text;
+  // 存在確認
+  if (
+    !passwordInput ||
+    !messageInput ||
+    !imageInput ||
+    !postButton ||
+    !postResult ||
+    !charCount ||
+    !messageList ||
+    !reloadMessagesButton
+  ) {
+    alert("必要なHTML要素が見つかりません");
     return;
   }
 
-  postResult.textContent = "投稿しました。";
-  messageInput.value = "";
-  imageInput.value = "";
-  charCount.textContent = "0 / 280"
-
-  await loadMessagesForAdmin();
-});
-
-
-// 削除
-const messageList =
-  document.getElementById("message-list");
-
-const reloadMessagesButton =
-  document.getElementById("reload-message");
-
-async function loadMessagesForAdmin() {
-  if (!messageList) {
-    alert("message-list が見つかりません");
-    return;
-  }
-
-  messageList.textContent = "読み込み中...";
-
-  try {
-    const response = await fetch("/list-message");
-
-    if (!response.ok) {
-      const text = await response.text();
-
-      messageList.textContent =
-        "読み込み失敗: status=" +
-        response.status +
-        " / " +
-        text;
-
-      return;
+  // 文字数
+  messageInput.addEventListener(
+    "input",
+    function () {
+      charCount.textContent =
+        messageInput.value.length +
+        " / 280";
     }
+  );
 
-    const messages = await response.json();
+  // ===== 投稿 =====
 
-    if (!Array.isArray(messages)) {
-      messageList.textContent =
-        "読み込み失敗: JSONが配列ではありません";
-      return;
-    }
+  postButton.addEventListener(
+    "click",
+    async function () {
 
-    if (messages.length === 0) {
-      messageList.textContent =
-        "投稿はありません。";
-      return;
-    }
+      const formData =
+        new FormData();
 
-    messageList.innerHTML = "";
-
-    for (const msg of messages) {
-      const article =
-        document.createElement("article");
-
-      article.style.border =
-        "1px solid #ccc";
-
-      article.style.borderRadius =
-        "8px";
-
-      article.style.padding =
-        "1rem";
-
-      article.style.marginBottom =
-        "1rem";
-
-      const time =
-        document.createElement("p");
-
-      time.textContent =
-        msg.createdAt
-          ? new Date(msg.createdAt).toLocaleString("ja-JP")
-          : "日時なし";
-
-      article.appendChild(time);
-
-      if (msg.text) {
-        const text =
-          document.createElement("p");
-
-        text.textContent =
-          msg.text;
-
-        text.style.whiteSpace =
-          "pre-wrap";
-
-        article.appendChild(text);
-      }
-
-      if (msg.imageUrl) {
-        const img =
-          document.createElement("img");
-
-        img.src =
-          msg.imageUrl;
-
-        img.alt =
-          "投稿画像";
-
-        img.style.maxWidth =
-          "240px";
-
-        img.style.display =
-          "block";
-
-        img.style.marginBottom =
-          "0.5rem";
-
-        article.appendChild(img);
-      }
-
-      const button =
-        document.createElement("button");
-
-      button.textContent =
-        "削除";
-
-      button.addEventListener(
-        "click",
-        function () {
-          deleteMessage(msg.id);
-        }
+      formData.append(
+        "password",
+        passwordInput.value
       );
 
-      article.appendChild(button);
+      formData.append(
+        "text",
+        messageInput.value
+      );
 
-      messageList.appendChild(article);
+      if (
+        imageInput.files.length > 0
+      ) {
+        formData.append(
+          "image",
+          imageInput.files[0]
+        );
+      }
+
+      postResult.textContent =
+        "投稿中...";
+
+      try {
+
+        const response =
+          await fetch(
+            "/post-message",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+        if (!response.ok) {
+
+          const text =
+            await response.text();
+
+          postResult.textContent =
+            "投稿失敗: status=" +
+            response.status +
+            " / " +
+            text;
+
+          return;
+        }
+
+        postResult.textContent =
+          "投稿しました。";
+
+        messageInput.value = "";
+
+        imageInput.value = "";
+
+        charCount.textContent =
+          "0 / 280";
+
+        await loadMessagesForAdmin();
+
+      } catch (error) {
+
+        postResult.textContent =
+          "通信エラー: " +
+          error.message;
+      }
     }
-  } catch (error) {
-    messageList.textContent =
-      "通信エラー: " + error.message;
-  }
-}
+  );
 
-if (reloadMessagesButton) {
+  // ===== 一覧読み込み =====
+
+  async function loadMessagesForAdmin() {
+
+    messageList.textContent =
+      "読み込み中...";
+
+    try {
+
+      const response =
+        await fetch(
+          "/list-messages"
+        );
+
+      if (!response.ok) {
+
+        const text =
+          await response.text();
+
+        messageList.textContent =
+          "読み込み失敗: status=" +
+          response.status +
+          " / " +
+          text;
+
+        return;
+      }
+
+      const messages =
+        await response.json();
+
+      if (
+        !Array.isArray(messages)
+      ) {
+
+        messageList.textContent =
+          "JSONが配列ではありません";
+
+        return;
+      }
+
+      if (
+        messages.length === 0
+      ) {
+
+        messageList.textContent =
+          "投稿はありません。";
+
+        return;
+      }
+
+      messageList.innerHTML = "";
+
+      for (const msg of messages) {
+
+        const article =
+          document.createElement(
+            "article"
+          );
+
+        article.style.border =
+          "1px solid #ccc";
+
+        article.style.borderRadius =
+          "8px";
+
+        article.style.padding =
+          "1rem";
+
+        article.style.marginBottom =
+          "1rem";
+
+        // 時刻
+
+        const time =
+          document.createElement(
+            "p"
+          );
+
+        time.textContent =
+          msg.createdAt
+            ? new Date(
+                msg.createdAt
+              ).toLocaleString(
+                "ja-JP"
+              )
+            : "日時なし";
+
+        time.style.fontSize =
+          "0.9rem";
+
+        time.style.opacity =
+          "0.7";
+
+        article.appendChild(time);
+
+        // 本文
+
+        if (msg.text) {
+
+          const text =
+            document.createElement(
+              "p"
+            );
+
+          text.textContent =
+            msg.text;
+
+          text.style.whiteSpace =
+            "pre-wrap";
+
+          article.appendChild(text);
+        }
+
+        // 画像
+
+        if (msg.imageUrl) {
+
+          const img =
+            document.createElement(
+              "img"
+            );
+
+          img.src =
+            msg.imageUrl;
+
+          img.alt =
+            "投稿画像";
+
+          img.style.maxWidth =
+            "240px";
+
+          img.style.display =
+            "block";
+
+          img.style.marginBottom =
+            "0.5rem";
+
+          img.style.borderRadius =
+            "8px";
+
+          article.appendChild(img);
+        }
+
+        // 削除ボタン
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.textContent =
+          "削除";
+
+        button.addEventListener(
+          "click",
+          function () {
+            deleteMessage(
+              msg.id
+            );
+          }
+        );
+
+        article.appendChild(button);
+
+        messageList.appendChild(
+          article
+        );
+      }
+
+    } catch (error) {
+
+      messageList.textContent =
+        "通信エラー: " +
+        error.message;
+    }
+  }
+
+  // ===== 削除 =====
+
+  async function deleteMessage(id) {
+
+    if (
+      !confirm(
+        "この投稿を削除しますか？"
+      )
+    ) {
+      return;
+    }
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "password",
+      passwordInput.value
+    );
+
+    formData.append(
+      "id",
+      id
+    );
+
+    try {
+
+      const response =
+        await fetch(
+          "/delete-message",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+      if (!response.ok) {
+
+        const text =
+          await response.text();
+
+        alert(
+          "削除失敗: " + text
+        );
+
+        return;
+      }
+
+      alert("削除しました。");
+
+      await loadMessagesForAdmin();
+
+    } catch (error) {
+
+      alert(
+        "通信エラー: " +
+        error.message
+      );
+    }
+  }
+
+  // ===== 更新ボタン =====
+
   reloadMessagesButton.addEventListener(
     "click",
     loadMessagesForAdmin
   );
-} else {
-  alert("reload-messages が見つかりません");
-}
+
+  // ===== 初回読み込み =====
+
+  loadMessagesForAdmin();
+
+});
 </script>
