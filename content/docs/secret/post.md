@@ -1,6 +1,7 @@
 ---
 title: "つぶやき投稿"
 bookHidden: true
+bookSearchExclude: true
 ---
 
 # つぶやき投稿

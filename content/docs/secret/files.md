@@ -1,6 +1,7 @@
 ---
 title: "ファイル置き場"
 bookHidden: true
+bookSearchExclude: true
 ---
 
 # ファイル置き場

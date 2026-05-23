@@ -1,6 +1,7 @@
 ---
 title: "秘密"
 weight: 100
+bookSearchExclude: true
 ---
 
 # 秘密
