@@ -171,4 +171,142 @@ async function deleteMessage(id) {
 }
 
 reloadMessagesButton.addEventListener("click", loadMessagesForAdmin);
+
+const messageList =
+  document.getElementById("message-list");
+
+const reloadMessagesButton =
+  document.getElementById("reload-messages");
+
+async function loadMessagesForAdmin() {
+  if (!messageList) {
+    alert("message-list が見つかりません");
+    return;
+  }
+
+  messageList.textContent = "読み込み中...";
+
+  try {
+    const response = await fetch("/list-messages");
+
+    if (!response.ok) {
+      const text = await response.text();
+
+      messageList.textContent =
+        "読み込み失敗: status=" +
+        response.status +
+        " / " +
+        text;
+
+      return;
+    }
+
+    const messages = await response.json();
+
+    if (!Array.isArray(messages)) {
+      messageList.textContent =
+        "読み込み失敗: JSONが配列ではありません";
+      return;
+    }
+
+    if (messages.length === 0) {
+      messageList.textContent =
+        "投稿はありません。";
+      return;
+    }
+
+    messageList.innerHTML = "";
+
+    for (const msg of messages) {
+      const article =
+        document.createElement("article");
+
+      article.style.border =
+        "1px solid #ccc";
+
+      article.style.borderRadius =
+        "8px";
+
+      article.style.padding =
+        "1rem";
+
+      article.style.marginBottom =
+        "1rem";
+
+      const time =
+        document.createElement("p");
+
+      time.textContent =
+        msg.createdAt
+          ? new Date(msg.createdAt).toLocaleString("ja-JP")
+          : "日時なし";
+
+      article.appendChild(time);
+
+      if (msg.text) {
+        const text =
+          document.createElement("p");
+
+        text.textContent =
+          msg.text;
+
+        text.style.whiteSpace =
+          "pre-wrap";
+
+        article.appendChild(text);
+      }
+
+      if (msg.imageUrl) {
+        const img =
+          document.createElement("img");
+
+        img.src =
+          msg.imageUrl;
+
+        img.alt =
+          "投稿画像";
+
+        img.style.maxWidth =
+          "240px";
+
+        img.style.display =
+          "block";
+
+        img.style.marginBottom =
+          "0.5rem";
+
+        article.appendChild(img);
+      }
+
+      const button =
+        document.createElement("button");
+
+      button.textContent =
+        "削除";
+
+      button.addEventListener(
+        "click",
+        function () {
+          deleteMessage(msg.id);
+        }
+      );
+
+      article.appendChild(button);
+
+      messageList.appendChild(article);
+    }
+  } catch (error) {
+    messageList.textContent =
+      "通信エラー: " + error.message;
+  }
+}
+
+if (reloadMessagesButton) {
+  reloadMessagesButton.addEventListener(
+    "click",
+    loadMessagesForAdmin
+  );
+} else {
+  alert("reload-messages が見つかりません");
+}
 </script>
