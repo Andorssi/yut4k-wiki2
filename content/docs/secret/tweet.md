@@ -5,8 +5,11 @@ bookHidden: true
 
 # つぶやき投稿
 
+[秘密に戻る](/docs/secret/)
+
+## ツイート権限を得るにはパスワードを入力してください
 <p>
-  <label>パスワード</label><br>
+  <label>入力せよ</label><br>
   <input type="password" id="password" required>
 </p>
 
