@@ -26,4 +26,3 @@ title: "自己紹介"
 情報通信ネットワーク研究室(鎌村研)
 |[研究室HP：https://www.kamamu-lab.jp/](https://www.kamamu-lab.jp/)|
 |-|
-
