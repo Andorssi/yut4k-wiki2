@@ -12,7 +12,7 @@ async function loadMessages() {
   const timeline = document.getElementById("timeline");
 
   try {
-    const response = await fetch("/list-messages");
+    const response = await fetch("/list-message");
 
     if (!response.ok) {
       const text = await response.text();
