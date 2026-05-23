@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const response =
         await fetch(
-          "/list-messages"
+          "/list-message"
         );
 
       if (!response.ok) {
