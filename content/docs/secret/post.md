@@ -73,105 +73,13 @@ postButton.addEventListener("click", async function () {
   postResult.textContent = "投稿しました。";
   messageInput.value = "";
   imageInput.value = "";
-  charCount.textContent = "0 / 280";
+  charCount.textContent = "0 / 280"
+
+  await loadMessagesForAdmin();
 });
 
-await loadMessagesForAdmin();
 
 // 削除
-const messageList = document.getElementById("message-list");
-const reloadMessagesButton = document.getElementById("reload-messages");
-
-async function loadMessagesForAdmin() {
-  messageList.textContent = "読み込み中...";
-
-  const response = await fetch("/list-messages");
-
-  if (!response.ok) {
-    const text = await response.text();
-    messageList.textContent =
-      "読み込み失敗: status=" + response.status + " / " + text;
-    return;
-  }
-
-  const messages = await response.json();
-
-  if (!Array.isArray(messages) || messages.length === 0) {
-    messageList.textContent = "投稿はありません。";
-    return;
-  }
-
-  messageList.innerHTML = "";
-
-  for (const msg of messages) {
-    const article = document.createElement("article");
-    article.style.border = "1px solid #ccc";
-    article.style.borderRadius = "8px";
-    article.style.padding = "1rem";
-    article.style.marginBottom = "1rem";
-
-    const time = document.createElement("p");
-    time.textContent = msg.createdAt
-      ? new Date(msg.createdAt).toLocaleString("ja-JP")
-      : "日時なし";
-
-    const text = document.createElement("p");
-    text.textContent = msg.text || "";
-    text.style.whiteSpace = "pre-wrap";
-
-    const button = document.createElement("button");
-    button.textContent = "削除";
-    button.addEventListener("click", function () {
-      deleteMessage(msg.id);
-    });
-
-    article.appendChild(time);
-
-    if (msg.text) {
-      article.appendChild(text);
-    }
-
-    if (msg.imageUrl) {
-      const img = document.createElement("img");
-      img.src = msg.imageUrl;
-      img.alt = "投稿画像";
-      img.style.maxWidth = "240px";
-      img.style.display = "block";
-      img.style.marginBottom = "0.5rem";
-      article.appendChild(img);
-    }
-
-    article.appendChild(button);
-    messageList.appendChild(article);
-  }
-}
-
-async function deleteMessage(id) {
-  if (!confirm("この投稿を削除しますか？")) {
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("password", passwordInput.value);
-  formData.append("id", id);
-
-  const response = await fetch("/delete-message", {
-    method: "POST",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    alert("削除失敗: " + text);
-    return;
-  }
-
-  alert("削除しました。");
-  await loadMessagesForAdmin();
-}
-
-reloadMessagesButton.addEventListener("click", loadMessagesForAdmin);
-
 const messageList =
   document.getElementById("message-list");
 
