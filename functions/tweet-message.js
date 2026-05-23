@@ -10,9 +10,15 @@ export async function onRequestPost(context) {
     }
 
     const text = String(formData.get("text") || "").trim();
-    const image = formData.get("image");
 
-    if (!text && (!image || typeof image === "string")) {
+    const imageField = formData.get("image");
+
+    const hasImage =
+      imageField &&
+      typeof imageField !== "string" &&
+      imageField.size > 0;
+
+    if (!text && !hasImage) {
       return new Response("本文または画像が必要です", { status: 400 });
     }
 
@@ -22,22 +28,33 @@ export async function onRequestPost(context) {
 
     let imageKey = null;
 
-    if (image && typeof image !== "string" && image.size > 0) {
-      if (!image.type.startsWith("image/")) {
+    if (hasImage) {
+      if (!imageField.type.startsWith("image/")) {
         return new Response("画像ファイルのみ投稿できます", { status: 400 });
       }
 
-      const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
-      if (image.size > MAX_IMAGE_SIZE) {
+      const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+      if (imageField.size > MAX_IMAGE_SIZE) {
         return new Response("画像は5MB以内にしてください", { status: 413 });
       }
 
-      const ext = image.type === "image/png" ? "png" : "jpg";
-      imageKey = `posts/images/${crypto.randomUUID()}.${ext}`;
+      let ext = "jpg";
 
-      await env.BUCKET.put(imageKey, image.stream(), {
+      if (imageField.type === "image/png") {
+        ext = "png";
+      } else if (imageField.type === "image/webp") {
+        ext = "webp";
+      } else if (imageField.type === "image/gif") {
+        ext = "gif";
+      }
+
+      imageKey =
+        `posts/images/${crypto.randomUUID()}.${ext}`;
+
+      await env.BUCKET.put(imageKey, imageField.stream(), {
         httpMetadata: {
-          contentType: image.type,
+          contentType: imageField.type,
         },
       });
     }
@@ -45,26 +62,42 @@ export async function onRequestPost(context) {
     const key = "posts/messages.json";
 
     const oldObject = await env.BUCKET.get(key);
-    const messages = oldObject ? await oldObject.json() : [];
+
+    let messages = [];
+
+    if (oldObject) {
+      messages = await oldObject.json();
+    }
 
     messages.unshift({
       id: crypto.randomUUID(),
       text,
       imageKey,
-      imageUrl: imageKey ? `/post-image/${imageKey}` : null,
+      imageUrl: imageKey
+        ? `/post-image/${imageKey}`
+        : null,
       createdAt: new Date().toISOString(),
     });
 
-    await env.BUCKET.put(key, JSON.stringify(messages, null, 2), {
-      httpMetadata: {
-        contentType: "application/json; charset=utf-8",
-      },
+    await env.BUCKET.put(
+      key,
+      JSON.stringify(messages, null, 2),
+      {
+        httpMetadata: {
+          contentType:
+            "application/json; charset=utf-8",
+        },
+      }
+    );
+
+    return Response.json({
+      ok: true,
     });
 
-    return Response.json({ ok: true });
   } catch (error) {
-    return new Response("Post message error: " + error.message, {
-      status: 500,
-    });
+    return new Response(
+      "Post message error: " + error.message,
+      { status: 500 }
+    );
   }
 }
