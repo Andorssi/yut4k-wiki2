@@ -14,7 +14,7 @@ type: "docs"
 
 ### 更新履歴
 
-2026年5月25日 [rust4章](./docs/rust_study/rust04/)を途中まで追加，Resultについて(./docs/rust_study/rust_result/)を追加 <br>
+2026年5月25日 [rust4章](./docs/rust_study/rust04/)を途中まで追加，[Resultについて](./docs/rust_study/rust_result/)を追加 <br>
 2026年5月24日 [管理人のつぶやき](./docs/posts/_index/)を追加 <br>
 2026年5月21日 [Rust9章](./docs/rust_study/rust09/)を追加，タブバーの非表示設定の更新<br>
 2026年5月18日 [Rust5章](./docs/rust_study/rust05/)を追加 <br>
