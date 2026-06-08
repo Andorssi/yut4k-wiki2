@@ -14,6 +14,7 @@ type: "docs"
 
 ### 更新履歴
 
+2026年6月8日  [M1メンバサイト](./docs/blog/hima05)を追加<br>
 2026年6月1日  [基本情報技術者試験](./docs/research/kihonjouho)を追加 <br>
 2026年5月25日 [rust4章](./docs/rust_study/rust04/)を途中まで追加，[Resultについて](./docs/rust_study/rust_result/)を追加 <br>
 2026年5月24日 [管理人のつぶやき](./docs/posts/_index/)を追加 <br>
