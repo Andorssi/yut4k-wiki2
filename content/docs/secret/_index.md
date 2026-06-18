@@ -1,6 +1,6 @@
 ---
 title: "秘密"
-weight: 100
+weight: 1000
 bookSearchExclude: true
 ---
 
