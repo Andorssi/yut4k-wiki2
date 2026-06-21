@@ -14,6 +14,8 @@ type: "docs"
 
 ### 更新履歴
 
+
+2026年6月21日 [latex入門](.docs/latex_study/_index/)を追加<br>
 2026年6月18日 [アプリ一覧](./docs/apps/_index/)を追加<br>
 2026年6月8日  [M1メンバサイト](./docs/blog/hima05)を追加<br>
 2026年6月1日  [基本情報技術者試験](./docs/research/kihonjouho)を追加 <br>

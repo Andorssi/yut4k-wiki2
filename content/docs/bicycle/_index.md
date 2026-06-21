@@ -1,6 +1,6 @@
 ---
 title: "自転車"
-weight: 50
+weight: 60
 # bookHidden: true    
 ---
 
