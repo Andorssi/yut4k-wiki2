@@ -1,0 +1,204 @@
+{{ define "main" }}
+
+<section class="home-slideshow" aria-label="トップ画像スライドショー">
+  {{ range $index, $slide := site.Data.home.slides }}
+    <div
+      class="home-slide{{ if eq $index 0 }} is-active{{ end }}"
+      style="background-image: url('{{ $slide.image }}');"
+    ></div>
+  {{ end }}
+
+  <div class="home-slideshow-text">
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Site.Params.description | default .Params.description }}</p>
+  </div>
+</section>
+
+<section class="home-hero">
+  <div class="home-description">
+    {{ .Content }}
+  </div>
+</section>
+
+<section class="home-section">
+  <h2>初めてお越しの方はまずこちらをご覧ください</h2>
+
+  <div class="home-card-grid">
+    {{ range site.Data.home.cards }}
+      <a class="home-card" href="{{ .url }}">
+        <h3>{{ .title }}</h3>
+        <p>{{ .description }}</p>
+      </a>
+    {{ end }}
+  </div>
+</section>
+
+<section class="home-section home-mutter-section">
+  <h2>管理人のつぶやき</h2>
+
+  <div class="home-latest-mutter" id="home-latest-mutter">
+    <p class="home-latest-mutter-loading">最新のつぶやきを読み込み中...</p>
+  </div>
+
+  <p class="home-mutter-link-wrap">
+    <a class="home-mutter-link" href="/posts/">
+      過去のつぶやきはこちら →
+    </a>
+  </p>
+</section>
+
+<section class="home-section">
+  <h2>最近更新したページ</h2>
+
+  <ul class="home-recent-list">
+    {{ $pages := where site.RegularPages "Params.home_exclude" "ne" true }}
+    {{ $pages = where $pages "Draft" "ne" true }}
+
+    {{ range first 10 (sort $pages "Lastmod" "desc") }}
+      <li>
+        <time datetime="{{ .Lastmod.Format "2006-01-02" }}">
+          {{ .Lastmod.Format "2006/01/02" }}
+        </time>
+
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+
+        {{ with .Params.description }}
+          <span class="home-recent-desc"> — {{ . }}</span>
+        {{ end }}
+      </li>
+    {{ end }}
+  </ul>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(".home-slide");
+
+    if (slides.length <= 1) {
+      return;
+    }
+
+    let currentIndex = 0;
+    const intervalMs = 10000;
+
+    setInterval(function () {
+      slides[currentIndex].classList.remove("is-active");
+
+      currentIndex = (currentIndex + 1) % slides.length;
+
+      slides[currentIndex].classList.add("is-active");
+    }, intervalMs);
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const target = document.getElementById("home-latest-mutter");
+
+    if (!target) {
+      return;
+    }
+
+    const endpoint = "/list-message";
+
+    fetch(endpoint)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("Failed to fetch latest mutter");
+        }
+
+        return response.json();
+      })
+      .then(function (data) {
+        const items = normalizeMutterItems(data);
+
+        if (items.length === 0) {
+          target.innerHTML = "";
+          const empty = document.createElement("p");
+          empty.className = "home-latest-mutter-empty";
+          empty.textContent = "まだつぶやきはありません。";
+          target.appendChild(empty);
+          return;
+        }
+
+        items.sort(function (a, b) {
+          return new Date(b.date) - new Date(a.date);
+        });
+
+        renderLatestMutter(target, items[0]);
+      })
+      .catch(function () {
+        target.innerHTML = "";
+        const error = document.createElement("p");
+        error.className = "home-latest-mutter-error";
+        error.textContent = "最新のつぶやきを取得できませんでした。";
+        target.appendChild(error);
+      });
+
+    function normalizeMutterItems(data) {
+      if (Array.isArray(data)) {
+        return data.map(toMutterItem).filter(Boolean);
+      }
+
+      if (Array.isArray(data.messages)) {
+        return data.messages.map(toMutterItem).filter(Boolean);
+      }
+
+      if (Array.isArray(data.posts)) {
+        return data.posts.map(toMutterItem).filter(Boolean);
+      }
+
+      return [];
+    }
+
+    function toMutterItem(item) {
+      const text = item.text || item.message || item.content || item.body || "";
+      const date = item.date || item.created_at || item.createdAt || item.updated_at || item.updatedAt || "";
+
+      if (!text) {
+        return null;
+      }
+
+      return {
+        text: text,
+        date: date
+      };
+    }
+
+    function renderLatestMutter(target, item) {
+      target.innerHTML = "";
+
+      const text = document.createElement("p");
+      text.className = "home-latest-mutter-text";
+      text.textContent = item.text;
+
+      target.appendChild(text);
+
+      if (item.date) {
+        const date = document.createElement("time");
+        date.className = "home-latest-mutter-date";
+
+        const parsedDate = new Date(item.date);
+
+        if (!Number.isNaN(parsedDate.getTime())) {
+          date.dateTime = parsedDate.toISOString();
+          date.textContent = formatDate(parsedDate);
+        } else {
+          date.textContent = item.date;
+        }
+
+        target.appendChild(date);
+      }
+    }
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return year + "/" + month + "/" + day;
+    }
+  });
+</script>
+
+{{ end }}

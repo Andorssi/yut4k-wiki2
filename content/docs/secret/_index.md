@@ -2,6 +2,7 @@
 title: "秘密"
 weight: 1000
 bookSearchExclude: true
+home_exclude: true
 ---
 
 # 秘密
