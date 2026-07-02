@@ -143,3 +143,362 @@
     display: none !important;
   }
 }
+
+.home-hero {
+  margin-bottom: 2rem;
+}
+
+.home-hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.home-description {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.home-section {
+  margin-top: 2rem;
+}
+
+.home-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.home-card {
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(130, 220, 145, 0.6);
+  background: rgba(130, 220, 145, 0.06);
+  text-decoration: none;
+}
+
+.home-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.home-card h3::after {
+  content: " →";
+  opacity: 0.65;
+}
+
+.home-card p {
+  margin-bottom: 0;
+  color: var(--gray-600);
+}
+
+.home-recent-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.home-recent-list li {
+  margin: 0.5rem 0;
+}
+
+.home-recent-list time {
+  display: inline-block;
+  min-width: 6.5rem;
+  color: var(--gray-500);
+  font-size: 0.9rem;
+}
+
+.home-recent-desc {
+  color: var(--gray-500);
+  font-size: 0.9rem;
+}
+
+.home-recommend-list {
+  line-height: 1.8;
+}
+
+.home-slideshow {
+  position: relative;
+  height: 300px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #222;
+}
+
+.home-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.home-slide.is-active {
+  opacity: 1;
+}
+
+.home-slideshow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.home-slideshow-text {
+  position: absolute;
+  z-index: 1;
+  left: 2rem;
+  bottom: 2rem;
+  right: 2rem;
+  color: white;
+}
+
+.home-slideshow-text h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.home-slideshow-text p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .home-slideshow {
+    height: 220px;
+    border-radius: 0.75rem;
+  }
+
+  .home-slideshow-text {
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .home-slideshow-text h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* 本文 h1: ページタイトル用。控えめな薄緑ボックス */
+.book-page h1,
+.markdown h1,
+article h1 {
+  background: rgba(150, 220, 160, 0.16);
+  color: #f3fff3;
+  padding: 0.55rem 0.85rem;
+  border-left: 5px solid rgba(130, 220, 145, 0.8);
+  border-radius: 0.3rem;
+  margin: 1.4rem 0 1rem;
+  font-weight: 750;
+  line-height: 1.35;
+  box-shadow: none;
+}
+
+/* 本文 h2: セクション見出し用。h1よりかなり控えめ */
+.book-page h2,
+.markdown h2,
+article h2 {
+  background: rgba(150, 220, 160, 0.08);
+  color: #f3fff3;
+  padding: 0.35rem 0.65rem;
+  border-left: 4px solid rgba(130, 220, 145, 0.55);
+  border-radius: 0.25rem;
+  margin: 1.6rem 0 0.75rem;
+  font-weight: 700;
+  line-height: 1.35;
+  box-shadow: none;
+}
+
+/* トップページのスライドショー内タイトルには、通常ページ用のh1装飾を適用しない */
+.home-slideshow-text h1 {
+  background: transparent;
+  color: #ffffff;
+  padding: 0;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0;
+  margin: 0 0 0.5rem;
+  box-shadow: none;
+
+  -webkit-text-fill-color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+/* ===== 上部固定ヘッダー ===== */
+
+:root {
+  --site-top-header-height: 64px;
+}
+
+/* 上部ヘッダー本体 */
+.site-top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--site-top-header-height);
+  z-index: 9998;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 1.5rem 0 7.5rem;
+
+  background: linear-gradient(90deg, #1f2937 0%, #263447 55%, #1f2937 100%);
+  border-bottom: 2px solid rgba(130, 220, 145, 0.6);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* 上部ヘッダーのタイトルリンク */
+.site-top-header-title {
+  display: inline-block;
+
+  color: #9ff0a8;
+  -webkit-text-fill-color: #9ff0a8;
+
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-decoration: none;
+
+  text-shadow: 0 0 10px rgba(120, 255, 140, 0.28);
+}
+
+.site-top-header-title:hover {
+  color: #c8ffd0;
+  -webkit-text-fill-color: #c8ffd0;
+  text-decoration: none;
+}
+
+/* 左メニュー内の既存サイトタイトルは、上部ヘッダーと重複するため非表示 */
+.book-brand,
+.book-menu .book-brand {
+  display: none;
+}
+
+/* fixedヘッダーは通常レイアウトの外に出るため、親コンテナ側で上余白を確保する */
+main.container {
+  padding-top: var(--site-top-header-height) !important;
+  box-sizing: border-box;
+}
+
+/* メニュー非表示時も、本文がヘッダーの裏に潜らないようにする */
+body.menu-hidden main.container {
+  padding-top: var(--site-top-header-height) !important;
+}
+
+/* 個別要素側の上マージンは使わない。body.menu-hidden .book-page の margin:0 !important と競合させないため */
+.book-menu,
+.book-page,
+.book-toc {
+  margin-top: 0 !important;
+}
+
+/* 左メニューはヘッダー下に吸着させ、高さもヘッダー分だけ短くする */
+.book-menu {
+  top: var(--site-top-header-height) !important;
+  height: calc(100vh - var(--site-top-header-height)) !important;
+  max-height: calc(100vh - var(--site-top-header-height)) !important;
+  overflow-y: auto;
+}
+
+.book-menu nav {
+  min-height: calc(100vh - var(--site-top-header-height)) !important;
+}
+
+/* メニュー開閉ボタンをヘッダー上に固定 */
+#menu-toggle {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 10000;
+}
+
+/* アンカーリンクで見出しへ飛んだとき、固定ヘッダーに隠れないようにする */
+html {
+  scroll-padding-top: calc(var(--site-top-header-height) + 1rem);
+}
+
+.book-page h1,
+.book-page h2,
+.book-page h3,
+.book-page h4,
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  scroll-margin-top: calc(var(--site-top-header-height) + 1rem);
+}
+
+/* スマホ幅 */
+@media screen and (max-width: 600px) {
+  :root {
+    --site-top-header-height: 56px;
+  }
+
+  .site-top-header {
+    padding: 0 1rem 0 4.5rem;
+  }
+
+  .site-top-header-title {
+    font-size: 1.25rem;
+  }
+
+  #menu-toggle {
+    top: 0.55rem;
+    left: 0.6rem;
+  }
+}
+
+/* ===== トップページ: 管理人のつぶやき ===== */
+
+.home-mutter-section {
+  margin-top: 2rem;
+}
+
+.home-latest-mutter {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(130, 220, 145, 0.28);
+  border-left: 4px solid rgba(130, 220, 145, 0.75);
+  border-radius: 0.45rem;
+  background: rgba(130, 220, 145, 0.055);
+}
+
+.home-latest-mutter-text {
+  margin: 0;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.home-latest-mutter-date {
+  display: block;
+  margin-top: 0.65rem;
+  color: rgba(230, 255, 235, 0.65);
+  font-size: 0.85rem;
+}
+
+.home-latest-mutter-loading,
+.home-latest-mutter-empty,
+.home-latest-mutter-error {
+  margin: 0;
+  color: rgba(230, 255, 235, 0.7);
+}
+
+.home-mutter-link-wrap {
+  margin: 0.65rem 0 0;
+  text-align: right;
+}
+
+.home-mutter-link {
+  color: #9fd6ff;
+  text-decoration: none;
+}
+
+.home-mutter-link:hover {
+  text-decoration: underline;
+}

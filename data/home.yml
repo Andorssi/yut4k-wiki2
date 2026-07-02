@@ -1,0 +1,17 @@
+cards:
+  - title: "自己紹介"
+    description: "管理人である高橋について"
+    url: "/docs/basic/myself/"
+
+  - title: "管理人の研究"
+    description: "ポートフォリオ的な感じ"
+    url: "/docs/research/"
+
+
+slides:
+  - image: "/images/home/IMG_2418.jpeg"
+  - image: "/images/home/IMG_3284.jpeg"
+  - image: "/images/home/IMG_3439.jpeg"
+  - image: "/images/home/IMG_4229.jpeg"
+  - image: "/images/home/IMG_4337.jpeg"
+  - image: "/images/home/IMG_4645.jpeg"
