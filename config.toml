@@ -2,6 +2,7 @@ baseURL = 'https://wiki.yut4k.com/'
 languageCode = 'ja'
 title = '高橋優作の独り言'
 theme = "hugo-book"
+enableGitInfo = true
 
 disableKinds = ['taxonomy']
 
@@ -17,4 +18,3 @@ disableKinds = ['taxonomy']
 		[markup.goldmark.renderer]
 			unsafe = true
 
-enableGitInfo = true

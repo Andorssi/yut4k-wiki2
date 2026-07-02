@@ -55,10 +55,20 @@
     {{ $pages = where $pages "Draft" "ne" true }}
 
     {{ range first 10 (sort $pages "Lastmod" "desc") }}
+      {{ $updated := .Lastmod }}
+
+      {{ if and .GitInfo .GitInfo.AuthorDate }}
+        {{ $updated = .GitInfo.AuthorDate }}
+      {{ end }}
+
       <li>
-        <time datetime="{{ .Lastmod.Format "2006-01-02" }}">
-          {{ .Lastmod.Format "2006/01/02" }}
-        </time>
+        {{ if not $updated.IsZero }}
+          <time datetime="{{ $updated.Format "2006-01-02" }}">
+            {{ $updated.Format "2006/01/02" }}
+          </time>
+        {{ else }}
+          <span class="home-recent-no-date">日付なし</span>
+        {{ end }}
 
         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
 

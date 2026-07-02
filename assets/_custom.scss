@@ -502,3 +502,10 @@ html {
 .home-mutter-link:hover {
   text-decoration: underline;
 }
+
+.home-recent-no-date {
+  display: inline-block;
+  min-width: 6.5rem;
+  color: rgba(230, 255, 235, 0.45);
+  font-size: 0.9rem;
+}
