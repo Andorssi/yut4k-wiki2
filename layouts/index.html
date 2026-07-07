@@ -53,23 +53,22 @@
   <ul class="home-recent-list">
     {{ $pages := where site.RegularPages "Params.home_exclude" "ne" true }}
     {{ $pages = where $pages "Draft" "ne" true }}
+    {{ $pages = where $pages "GitInfo" "ne" nil }}
 
     {{ range first 10 (sort $pages "GitInfo.AuthorDate" "desc") }}
-      {{ if .GitInfo }}
-        {{ $updated := .GitInfo.AuthorDate }}
+      {{ $updated := .GitInfo.AuthorDate }}
 
-        <li>
-          <time datetime="{{ $updated.Format "2006-01-02" }}">
-            {{ $updated.Format "2006/01/02" }}
-          </time>
+      <li>
+        <time datetime="{{ $updated.Format "2006-01-02" }}">
+          {{ $updated.Format "2006/01/02" }}
+        </time>
 
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
 
-          {{ with .Params.description }}
-            <span class="home-recent-desc"> — {{ . }}</span>
-          {{ end }}
-        </li>
-      {{ end }}
+        {{ with .Params.description }}
+          <span class="home-recent-desc"> — {{ . }}</span>
+        {{ end }}
+      </li>
     {{ end }}
   </ul>
 </section>
