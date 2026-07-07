@@ -54,28 +54,22 @@
     {{ $pages := where site.RegularPages "Params.home_exclude" "ne" true }}
     {{ $pages = where $pages "Draft" "ne" true }}
 
-    {{ range first 10 (sort $pages "Lastmod" "desc") }}
-      {{ $updated := .Lastmod }}
+    {{ range first 10 (sort $pages "GitInfo.AuthorDate" "desc") }}
+      {{ if .GitInfo }}
+        {{ $updated := .GitInfo.AuthorDate }}
 
-      {{ if and .GitInfo .GitInfo.AuthorDate }}
-        {{ $updated = .GitInfo.AuthorDate }}
-      {{ end }}
-
-      <li>
-        {{ if not $updated.IsZero }}
+        <li>
           <time datetime="{{ $updated.Format "2006-01-02" }}">
             {{ $updated.Format "2006/01/02" }}
           </time>
-        {{ else }}
-          <span class="home-recent-no-date">日付なし</span>
-        {{ end }}
 
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
 
-        {{ with .Params.description }}
-          <span class="home-recent-desc"> — {{ . }}</span>
-        {{ end }}
-      </li>
+          {{ with .Params.description }}
+            <span class="home-recent-desc"> — {{ . }}</span>
+          {{ end }}
+        </li>
+      {{ end }}
     {{ end }}
   </ul>
 </section>
