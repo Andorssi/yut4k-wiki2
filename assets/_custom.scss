@@ -26,9 +26,9 @@
     position: sticky;
     top: 0;
 
-    flex: 0 0 22rem !important;
-    width: 22rem !important;
-    min-width: 22rem !important;
+    flex: 0 0 18rem !important;
+    width: 18rem !important;
+    min-width: 18rem !important;
 
     height: 100vh;
     max-height: 100vh;
@@ -49,9 +49,9 @@
   }
 
   .book-menu-content {
-    width: 22rem !important;
-    max-width: 22rem !important;
-    min-width: 22rem !important;
+    width: 18rem !important;
+    max-width: 18rem !important;
+    min-width: 18rem !important;
 
     transition:
       width 0.25s ease,
