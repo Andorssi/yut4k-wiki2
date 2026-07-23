@@ -1,4 +1,3 @@
-
 ---
 title: screenfetchで遊ぶ
 weight: 30
