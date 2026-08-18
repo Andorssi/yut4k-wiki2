@@ -22,18 +22,9 @@ home_exclude: true
 |Cloudflare：[https://dash.cloudflare.com/f1401fa6b67989032c97bab89f82948a/home/overview](https://dash.cloudflare.com/f1401fa6b67989032c97bab89f82948a/home/overview)|
 |-|
 
-## ファイル置き場
-|[こちらから](./files/)|
-|-|
+## 秘密の機能たち
 
-## アクセスログ
-|[こちらから](./access-log/)|
-|-|
-
-
-## ツイートする
-|[こちらから](./post/)|
-|-|
+{{< section-list >}}
 
 
 ## その他

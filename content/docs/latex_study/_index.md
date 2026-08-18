@@ -94,3 +94,6 @@ code .
 $ sudo apt install -y language-pack-ja
 $ sudo update-locale LANG=ja_JP.UTP8
 ```
+
+## ここからスタートです
+{{< section-list >}}

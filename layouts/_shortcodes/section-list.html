@@ -1,0 +1,29 @@
+<div class="section-link-list">
+  {{ range .Page.Pages.ByWeight }}
+    <a class="section-link-card" href="{{ .RelPermalink }}">
+
+      <div class="section-link-header">
+        <span class="section-link-title">
+          {{ .LinkTitle }}
+        </span>
+
+        <span class="section-link-right">
+          {{ if .IsSection }}
+            <span class="section-link-count">
+              {{ len .RegularPagesRecursive }}ページ
+            </span>
+          {{ end }}
+
+          <span class="section-link-arrow">→</span>
+        </span>
+      </div>
+
+      {{ with .Description }}
+        <div class="section-link-description">
+          {{ . }}
+        </div>
+      {{ end }}
+
+    </a>
+  {{ end }}
+</div>

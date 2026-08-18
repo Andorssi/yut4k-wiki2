@@ -4,3 +4,5 @@ weight: 20
 ---
 
 # パーツ
+
+{{< section-list >}}

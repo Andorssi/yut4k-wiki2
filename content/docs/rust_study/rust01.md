@@ -1,6 +1,7 @@
 ---
 title: 1章
 weight: 10
+description: "はじめに"
 ---
 
 # 1章　はじめに

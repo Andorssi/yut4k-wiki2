@@ -2,6 +2,7 @@
 title: "ファイル置き場"
 bookHidden: true
 bookSearchExclude: true
+description: "言葉は無粋"
 ---
 
 # ファイル置き場

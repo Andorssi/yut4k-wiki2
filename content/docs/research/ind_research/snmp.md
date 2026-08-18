@@ -1,6 +1,7 @@
 ---
 title: "SNMP"
 weight: 10
+description: "古のプロトコルです"
 ---
 
 # SNMPを用いたトラヒック量取得実験

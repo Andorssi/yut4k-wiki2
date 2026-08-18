@@ -1,6 +1,7 @@
 ---
 title: "6章"
 weight: 60
+description: "Enumとパターンマッチング"
 ---
 
 # 6章 Enumとパターンマッチング

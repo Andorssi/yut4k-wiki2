@@ -1,6 +1,7 @@
 ---
 title: "9章"
 weight: 90
+description: "エラーハンドリング"
 ---
 
 # 9章　エラー処理

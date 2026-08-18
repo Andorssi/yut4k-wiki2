@@ -1,6 +1,7 @@
 ---
 title: GitHubチュートリアル
 weight: 40
+description: "GitHubチュートリアルです．ほとんど自分用です．"
 ---
 
 # GitHubチュートリアル

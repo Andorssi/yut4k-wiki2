@@ -528,3 +528,78 @@ html {
   width: 100%;
   height: auto;
 }
+
+
+/*
+_index.mdのリストを自動化するための
+*/
+.section-link-list {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.section-link-card {
+  display: block;
+  padding: 1rem 1.2rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  text-decoration: none !important;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.section-link-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(120, 200, 160, 0.45);
+  transform: translateX(3px);
+}
+
+.section-link-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-link-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.section-link-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-shrink: 0;
+}
+
+.section-link-count {
+  font-size: 0.78rem;
+  opacity: 0.55;
+}
+
+.section-link-arrow {
+  font-size: 1rem;
+  opacity: 0.65;
+
+  transition: transform 0.15s ease;
+}
+
+.section-link-card:hover .section-link-arrow {
+  transform: translateX(3px);
+}
+
+.section-link-description {
+  margin-top: 0.35rem;
+
+  font-size: 0.88rem;
+  opacity: 0.65;
+}

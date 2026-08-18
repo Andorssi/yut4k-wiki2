@@ -1,6 +1,7 @@
 ---
 title: "16章"
 weight: 160
+description: "並列プログラミング"
 ---
 
 # 16章 並列処理

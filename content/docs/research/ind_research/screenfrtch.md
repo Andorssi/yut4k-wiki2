@@ -1,6 +1,7 @@
 ---
 title: screenfetchで遊ぶ
 weight: 30
+description: "プロンプトを開くたびに少しほっこりできます"
 ---
 
 # Screenfetchで遊ぼう

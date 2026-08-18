@@ -2,6 +2,7 @@
 title: "つぶやき投稿"
 bookHidden: true
 bookSearchExclude: true
+description: "言葉は無粋"
 ---
 
 # つぶやき投稿

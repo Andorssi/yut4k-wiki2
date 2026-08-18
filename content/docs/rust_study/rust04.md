@@ -1,6 +1,7 @@
 ---
 title: "4章"
 weight: 40
+description: "所有権"
 ---
 
 # 4章　所有権

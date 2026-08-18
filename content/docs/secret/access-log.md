@@ -2,6 +2,7 @@
 title: "アクセスログ管理"
 bookHidden: true
 bookSearchExclude: true
+description: "言葉は無粋"
 ---
 
 # アクセスログ管理

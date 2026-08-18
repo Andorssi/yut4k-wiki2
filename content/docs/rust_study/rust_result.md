@@ -1,6 +1,7 @@
 ---
 title: "Resultについて"
 weight: 200
+description: "エラーハンドリングで出てくる話の補足です"
 ---
 
 # Result型についての補足

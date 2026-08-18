@@ -1,6 +1,7 @@
 ---
 title: "デカントアビリティ"
 weight: 1
+description: "3D Remake版限定のシステムです"
 ---
 
 # デカントアビリティ一覧
