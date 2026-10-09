@@ -603,3 +603,59 @@ _index.mdのリストを自動化するための
   font-size: 0.88rem;
   opacity: 0.65;
 }
+
+// ネタバレ表示非表示
+.spoiler {
+  margin: 1.2rem 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  overflow: hidden;
+}
+
+.spoiler-summary {
+  padding: 0.8rem 1rem;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  user-select: none;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.spoiler-summary:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.spoiler-content {
+  padding: 1rem 1.2rem;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spoiler-content > :first-child {
+  margin-top: 0;
+}
+
+.spoiler-content > :last-child {
+  margin-bottom: 0;
+}
+
+.spoiler-hide {
+  display: none;
+}
+
+.spoiler[open] .spoiler-show {
+  display: none;
+}
+
+.spoiler[open] .spoiler-hide {
+  display: inline;
+}

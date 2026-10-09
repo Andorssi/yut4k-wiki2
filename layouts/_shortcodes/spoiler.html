@@ -1,0 +1,15 @@
+<details class="spoiler">
+  <summary class="spoiler-summary">
+    <span class="spoiler-show">
+      {{ with .Get "title" }}{{ . }}{{ else }}ネタバレを表示{{ end }}
+    </span>
+
+    <span class="spoiler-hide">
+      ネタバレを隠す
+    </span>
+  </summary>
+
+  <div class="spoiler-content">
+    {{ .Inner | strings.TrimSpace | .Page.RenderString }}
+  </div>
+</details>
