@@ -1,0 +1,24 @@
+
+{{- $url := urls.Parse .Destination -}}
+{{- $siteURL := urls.Parse site.BaseURL -}}
+{{- $href := .Destination -}}
+
+{{- /* サイト内リンクの解決 */ -}}
+{{- if and (eq $url.Host "") (ne $url.Path "") -}}
+  {{- with or (.Page.GetPage $url.Path) (.Page.Resources.Get $url.Path) (resources.Get $url.Path) -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $url.RawQuery }}{{ $href = printf "%s?%s" $href . }}{{ end -}}
+    {{- with $url.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 外部URLかどうかを判定 */ -}}
+{{- $isExternal := and (ne $url.Host "") (ne $url.Host $siteURL.Host) -}}
+
+{{- /* PDFファイルかどうかを判定 */ -}}
+{{- $isPDF := strings.HasSuffix (strings.ToLower $url.Path) ".pdf" -}}
+
+{{- /* 新しいタブで開くかどうか */ -}}
+{{- $newTab := or $isExternal $isPDF -}}
+
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $newTab }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text }}</a>
